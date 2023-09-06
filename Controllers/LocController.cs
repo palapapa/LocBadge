@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LocBadge.Controllers;
 
-[Route("api/[controller]")]
+[Route("[controller]")]
 [ApiController]
 public class LocController : ControllerBase
 {
-
+    
 }
