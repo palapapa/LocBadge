@@ -1,20 +1,17 @@
-using DotNet.Globbing;
-using LocBadge.ModelBinders;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace LocBadge.Models;
 
-[ModelBinder(typeof(LocModelBinder))]
 public record LocModel
 {
-    [Required]
-    public required IList<SearchPath> Paths { get; init; }
+    [Required(ErrorMessage = $"{nameof(Paths)} is required.")]
+    public required IList<string> Paths { get; init; }
 
-    [Required]
+    [Required(ErrorMessage = $"{nameof(Extensions)} is required.")]
     public required IList<string> Extensions { get; init; }
 
-    [Required]
+    [Required(ErrorMessage = $"{nameof(AreExtensionsExcluded)} is required.")]
     public required bool AreExtensionsExcluded { get; init; }
 }
