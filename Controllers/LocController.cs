@@ -18,19 +18,19 @@ public class LocController : ControllerBase
     /// <para>Gets an <see cref="IList{T}"/> of ignored paths from a comma-separated list of ignored paths.</para>
     /// <para>Commas can be escaped by prefixing a backslash and backslashes can be escaped by prefixing a backslash.</para>
     /// </summary>
-    /// <exception cref="ArgumentException">When <paramref name="ignorePath"/> contains an invalid escape sequence.</exception>
-    /// <param name="ignorePath">A comma-separated list of ignored paths.</param>
+    /// <exception cref="ArgumentException">When <paramref name="ignoredPath"/> contains an invalid escape sequence.</exception>
+    /// <param name="ignoredPath">A comma-separated list of ignored paths.</param>
     /// <returns>An <see cref="IList{T}"/> of ignored paths.</returns>
-    private static List<string> ParseCommaSeparatedIgnorePaths(string ignorePath)
+    private static List<string> ParseCommaSeparatedIgnoredPaths(string ignoredPath)
     {
         List<StringBuilder> results = [];
         StringBuilder result = new();
         bool isInEscapeSequence = false;
-        for (int i = 0; i < ignorePath.Length; i++)
+        for (int i = 0; i < ignoredPath.Length; i++)
         {
             if (!isInEscapeSequence)
             {
-                switch (ignorePath[i])
+                switch (ignoredPath[i])
                 {
                     case '\\':
                         isInEscapeSequence = true;
@@ -38,24 +38,24 @@ public class LocController : ControllerBase
                     // If a comma is read and it's not being escaped, a path has been completely read.
                     case ',':
                         results.Add(result);
-                        if (i != ignorePath.Length - 1)
+                        if (i != ignoredPath.Length - 1)
                         {
                             result = new();
                         }
                         break;
                     default:
-                        result.Append(ignorePath[i]);
+                        result.Append(ignoredPath[i]);
                         break;
                 }
             }
             else
             {
-                switch (ignorePath[i])
+                switch (ignoredPath[i])
                 {
                     case '\\':
                     case ',':
                         isInEscapeSequence = false;
-                        result.Append(ignorePath[i]);
+                        result.Append(ignoredPath[i]);
                         break;
                     default:
                         throw new ArgumentException($"Invalid escape sequence at position {i}.");
