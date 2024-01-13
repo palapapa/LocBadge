@@ -38,10 +38,11 @@ public class LocController : ControllerBase
                     // If a comma is read and it's not being escaped, a path has been completely read.
                     case ',':
                         results.Add(result);
-                        if (i != ignoredPath.Length - 1)
+                        if (i != ignoredPath.Length - 1) // Don't replace the current ignored path if this is the last path
                         {
                             result = new();
                         }
+                        // If this is the last character, the loop ends and the last result needs to be added to results outside the loop
                         break;
                     default:
                         result.Append(ignoredPath[i]);
@@ -62,6 +63,11 @@ public class LocController : ControllerBase
                 }
             }
         }
+        if (isInEscapeSequence) // If the last character is a backslash
+        {
+            throw new ArgumentException($"Invalid escape sequence at position {ignoredPath.Length - 1}.");
+        }
+        results.Add(result); // After the loop ends, there will still be one last ignored path not added ot results
         return results.Select(result => result.ToString()).ToList();
     }
 }
